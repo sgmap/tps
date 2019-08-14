@@ -16,7 +16,7 @@ class Instructeur < ApplicationRecord
   has_many :dossiers, -> { state_not_brouillon }, through: :groupe_instructeurs
   has_many :follows, -> { active }, inverse_of: :instructeur
   has_many :previous_follows, -> { inactive }, class_name: 'Follow', inverse_of: :instructeur
-  has_many :followed_dossiers, through: :follows, source: :dossier
+  has_many :followed_dossiers, -> { not_archived}, through: :follows, source: :dossier
   has_many :previously_followed_dossiers, -> { distinct }, through: :previous_follows, source: :dossier
   has_many :avis
   has_many :dossiers_from_avis, through: :avis, source: :dossier

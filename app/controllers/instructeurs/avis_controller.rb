@@ -50,6 +50,7 @@ module Instructeurs
     end
 
     def create_commentaire
+      # could I be here if the dossier is archived?
       @commentaire = CommentaireService.build(current_instructeur, avis.dossier, commentaire_params)
 
       if @commentaire.save

@@ -30,8 +30,10 @@ class Dossier < ApplicationRecord
   has_many :invites, dependent: :destroy
   has_many :follows, -> { active }, inverse_of: :dossier
   has_many :previous_follows, -> { inactive }, class_name: 'Follow', inverse_of: :dossier
+  has_many :all_follows, class_name: 'Follow', inverse_of: :dossier
   has_many :followers_instructeurs, through: :follows, source: :instructeur
   has_many :previous_followers_instructeurs, -> { distinct }, through: :previous_follows, source: :instructeur
+  has_many :all_followers_instructeurs, -> { distinct }, through: :all_follows, source: :instructeur
   has_many :avis, inverse_of: :dossier, dependent: :destroy
 
   has_many :dossier_operation_logs, dependent: :destroy
