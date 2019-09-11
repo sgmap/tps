@@ -1,6 +1,6 @@
 # Fetch and compute monthly reports about the users conversations on Helpscout
 class Helpscout::UserConversationsAdapter
-  EXCLUDED_TAGS = ['openlab', 'bizdev', 'admin', 'webinaire']
+  EXCLUDED_TAGS = ['openlab', 'bizdev', 'admin', 'webinaire', 'administration']
 
   def initialize(from, to)
     @from = from
