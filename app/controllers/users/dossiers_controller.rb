@@ -149,7 +149,7 @@ module Users
         end
         return redirect_to(merci_dossier_path(@dossier))
       elsif errors.present?
-        flash.now.alert = errors
+        flash.now.alert = @dossier.errors.full_messages
       else
         flash.now.notice = 'Votre brouillon a bien été sauvegardé.'
       end
@@ -368,22 +368,20 @@ module Users
         if @dossier.champs.any?(&:changed_for_autosave?)
           @dossier.last_champ_updated_at = Time.zone.now
         end
-        if !@dossier.save
-          errors += @dossier.errors.full_messages
-        elsif change_groupe_instructeur?
+        if @dossier.save && change_groupe_instructeur?
           @dossier.assign_to_groupe_instructeur(groupe_instructeur_from_params)
         end
       end
 
       if !save_draft?
-        errors += @dossier.check_mandatory_champs
+        @dossier.check_mandatory_champs
 
         if @dossier.groupe_instructeur.nil?
-          errors << "Le champ « #{@dossier.procedure.routing_criteria_name} » doit être rempli"
+          @dossier.errors.add :groupe_instructeur, "Le champ « #{@dossier.procedure.routing_criteria_name} » doit être rempli"
         end
       end
 
-      errors
+      @dossier.errors.full_messages + @dossier.champs.map(&:errors).flat_map(&:full_messages)
     end
 
     def ensure_ownership!

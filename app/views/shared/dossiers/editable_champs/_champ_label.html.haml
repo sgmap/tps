@@ -8,3 +8,7 @@
 
 - if champ.description.present?
   .notice{ id: describedby_id(champ) }= string_to_html(champ.description)
+
+- if champ.errors.present?
+  - champ.errors.full_messages.each do |message|
+    %p.error=message

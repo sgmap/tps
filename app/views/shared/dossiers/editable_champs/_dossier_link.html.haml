@@ -2,7 +2,6 @@
   = form.number_field :value,
     placeholder: "Numéro de dossier",
     autocomplete: 'off',
-    required: champ.mandatory?,
     data: { remote: true, url: champs_dossier_link_path(form.index) }
 
   .help-block

@@ -11,7 +11,4 @@
           Non renseigné
 
   - else
-    = form.select :value,
-      champ.options,
-      disabled: champ.disabled_options,
-      required: champ.mandatory?
+    = form.select :value, champ.options, disabled: champ.disabled_options,
