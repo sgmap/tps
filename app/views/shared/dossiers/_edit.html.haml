@@ -15,7 +15,7 @@
       - if dossier.brouillon?
         %p.mandatory-explanation
           - if autosave_available?(dossier)
-            = t('views.shared.dossiers.edit.autosave_text')
+            = t('views.shared.dossiers.edit.autosave')
           - else
             Pour enregistrer votre dossier et le reprendre plus tard, cliquez sur le bouton « Enregistrer le brouillon » en bas à gauche du formulaire.
       - if !apercu && dossier.france_connect_information.present?
@@ -53,7 +53,7 @@
                 data: { 'disable-with': "Envoi en cours…" }
 
             - if dossier.can_transition_to_en_construction?
-              = f.button t('views.shared.dossiers.edit.submit_file_button'),
+              = f.button t('views.shared.dossiers.edit.submit_file'),
                 name: :submit_draft,
                 value: true,
                 class: 'button send primary',
@@ -61,7 +61,7 @@
                 data: { 'disable-with': "Envoi en cours…" }
 
           - else
-            = f.button t('views.shared.dossiers.edit.save_changes_button'),
+            = f.button t('views.shared.dossiers.edit.save_changes'),
               class: 'button send primary',
               data: { 'disable-with': "Envoi en cours…" }
 

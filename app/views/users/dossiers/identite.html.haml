@@ -4,7 +4,7 @@
 
 - if !dossier_submission_is_closed?(@dossier)
   = form_for @dossier.individual, url: update_identite_dossier_path(@dossier), html: { class: "form" } do |f|
-    %h1= t('views.users.dossiers.identite.title_id_data')
+    %h1= t('views.users.dossiers.identite.identity_data')
 
     %p.mb-1= t('views.users.dossiers.identite.complete_data')
 
@@ -26,10 +26,10 @@
       .inline-champ
         = f.label :nom
         = f.text_field :nom, class: "small", required: true, autocomplete: 'family-name'
-        
+
 
     - if @dossier.procedure.ask_birthday?
       = f.label :birthdate
       = f.date_field :birthdate, value: @dossier.individual.birthdate, placeholder: 'format : AAAA-MM-JJ', required: true, class: "small"
 
-    = f.submit t('views.users.dossiers.identite.continue_button'), class: "button large primary expand"
+    = f.submit t('views.users.dossiers.identite.continue'), class: "button large primary expand"
