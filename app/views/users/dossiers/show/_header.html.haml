@@ -6,7 +6,7 @@
       %span.icon.folder
       %h1= dossier.procedure.libelle
       %h2
-        = t('views.users.dossiers.show.header.file_number', dossier_id: dossier.id)
+        = t('views.users.dossiers.show.header.dossier_number', dossier_id: dossier.id)
         - if dossier.en_construction_at.present?
           = t('views.users.dossiers.show.header.submit_date', date_du_dossier: I18n.l(dossier.en_construction_at))
 
@@ -14,13 +14,13 @@
       .header-actions
         = render partial: 'invites/dropdown', locals: { dossier: dossier }
         - if dossier.can_be_updated_by_user? && !current_page?(modifier_dossier_path(dossier))
-          = link_to t('views.users.dossiers.show.header.edit_my_file'), modifier_dossier_path(dossier), class: 'button accepted edit-form', 'title'=> "Vous pouvez modifier votre dossier tant qu'il n'est passé en instruction"
+          = link_to t('views.users.dossiers.show.header.edit_dossier'), modifier_dossier_path(dossier), class: 'button accepted edit-form', 'title'=> "Vous pouvez modifier votre dossier tant qu'il n'est passé en instruction"
         %span.dropdown.print-menu-opener
           %button.button.dropdown-button.icon-only{ title: t('views.users.dossiers.show.header.print'), 'aria-label': 'imprimer', 'aria-expanded' => 'false', 'aria-controls' => 'print-menu' }
             %span.icon.printer
           %ul#print-menu.print-menu.dropdown-content
             %li
-              = link_to t('views.users.dossiers.show.header.print_all_file'), dossier_path(dossier, format: :pdf), target: "_blank", rel: "noopener", class: "menu-item menu-link"
+              = link_to t('views.users.dossiers.show.header.print_dossier'), dossier_path(dossier, format: :pdf), target: "_blank", rel: "noopener", class: "menu-item menu-link"
 
     - if dossier.close_to_expiration?
       .card.warning

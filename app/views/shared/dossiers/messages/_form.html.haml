@@ -6,7 +6,7 @@
   .flex.justify-between.wrap
     %div
       = f.label :piece_jointe, for: :piece_jointe do
-        = t('views.shared.dossiers.messages.form.attach_file')
+        = t('views.shared.dossiers.messages.form.attach_dossier')
         %span.notice= t('views.shared.dossiers.messages.form.attachment_size')
       = f.file_field :piece_jointe, id: 'piece_jointe', direct_upload: true
 

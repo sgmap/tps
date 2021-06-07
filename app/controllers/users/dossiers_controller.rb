@@ -162,7 +162,7 @@ module Users
 
     def extend_conservation
       dossier.update(conservation_extension: dossier.conservation_extension + 1.month)
-      flash[:notice] = t('.archived_file')
+      flash[:notice] = t('.archived_dossier')
       redirect_to dossier_path(@dossier)
     end
 
@@ -210,7 +210,7 @@ module Users
 
       if dossier.can_be_deleted_by_user?
         dossier.discard_and_keep_track!(current_user, :user_request)
-        flash.notice = t('.file_deleted')
+        flash.notice = t('.deleted_dossier')
         redirect_to dossiers_path
       else
         flash.notice = t('.undergoingreview')

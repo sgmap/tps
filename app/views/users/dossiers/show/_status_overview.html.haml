@@ -21,7 +21,7 @@
     - elsif dossier.en_construction?
       .en-construction
         %p
-          = t('views.users.dossiers.show.status_overview.file_in_progress')
+          = t('views.users.dossiers.show.status_overview.dossier_in_progress')
           = succeed '.' do
             %strong= t('views.users.dossiers.show.status_overview.still_editable')
           = t('views.users.dossiers.show.status_overview.no_longer_editable')

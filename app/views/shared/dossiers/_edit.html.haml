@@ -53,7 +53,7 @@
                 data: { 'disable-with': "Envoi en cours…" }
 
             - if dossier.can_transition_to_en_construction?
-              = f.button t('views.shared.dossiers.edit.submit_file'),
+              = f.button t('views.shared.dossiers.edit.submit_dossier'),
                 name: :submit_draft,
                 value: true,
                 class: 'button send primary',

@@ -48,9 +48,9 @@ en:
     commencer:
       show:
         start_procedure: Start the procedure
-        existing_files: You already have files for this procedure
-        show_files: View my current files
-        start_new_file: Start a new file
+        existing_dossiers: You already have files for this procedure
+        show_dossiers: View my current files
+        start_new_dossier: Start a new file
     invites:
       dropdown:
         invite_to_edit: Invite someone to edit this file
@@ -65,8 +65,8 @@ en:
         invite_to_participate: "Invited people to participate in this file"
         withdraw_permission: "Withdraw the permission"
         want_to_withdraw_permission: "Would you like to withdraw the permission?"
-        edit_file: "These people can edit this file."
-        submit_file_yourself: "You must submit the file yourself when it is complete."
+        edit_dossier: "These people can edit this file."
+        submit_dossier_yourself: "You must submit the file yourself when it is complete."
     layouts:
       commencer:
         no_procedure:
@@ -83,7 +83,7 @@ en:
       dossiers:
         edit:
           autosave: Your file is automatically saved after each modification. You can close the window at any time and pick up where you left off later.
-          submit_file: Submit the file
+          submit_dossier: Submit the file
           save_changes: Save the changes of the file
         messages:
           message_issuer:
@@ -95,7 +95,7 @@ en:
           form:
             send_message: "Send message"
             attachment_size: "(attachment size max : 20 Mo)"
-            attach_file: "Attach a file"
+            attach_dossier: "Attach a file"
             write_message_placeholder: "Write your message here"
             write_message_to_administration_placeholder: "Write your message to the administration here"
         demande:
@@ -114,30 +114,30 @@ en:
           continue: Continue
         merci:
           thanks: Thank you!
-          file_send_line1: Your file on the procedure
-          file_send_line2: has been sent.
-          file_acces_line1: You have now access to your
-          file_acces_line2: online file.
-          file_edit_line1: You can
-          file_edit_line2: edit it
-          file_edit_line3: and
-          file_edit_line4: talk with an instructor.
-          acces_file: Access your file
-          submit_file: Submit an other file
+          dossier_send_l1: Your file on the procedure
+          dossier_send_l2: has been sent.
+          dossier_acces_l1: You have now access to your
+          dossier_acces_l2: online file.
+          dossier_edit_l1: You can
+          dossier_edit_l2: edit it
+          dossier_edit_l3: and
+          dossier_edit_l4: talk with an instructor.
+          acces_dossier: Access your file
+          submit_dossier: Submit an other file
         show:
           header:
-            edit_my_file: Edit my file
+            edit_dossier: Edit my file
             summary: "Summary"
             request: "Request"
             mailbox: "Mailbox"
-            file_number: "File n. %{dossier_id}"
+            dossier_number: "File n. %{dossier_id}"
             submit_date: "- Submit on %{date_du_dossier}"
             print: "print"
-            print_all_file: "All the file"
+            print_dossier: "All the file"
           status_overview:
             status_draft: draft
             status_in_progress: in progress
-            file_in_progress: Your file is in progress. It means that
+            dossier_in_progress: Your file is in progress. It means that
             still_editable: you can still edit it
             no_longer_editable: You will no longer be able to edit the file when the administration will switch it to "review".
             status_review: undergoing review
@@ -151,21 +151,21 @@ en:
         messagerie:
           mailbox: "The mailbox allows you to contact the instructor in charge of your file."
         demande:
-          edit_file: "Edit file"
+          edit_dossier: "Edit file"
         index:
-          files: "Files"
+          dossiers: "Files"
         dossiers_list:
           procedure: "Procedure"
-          n_file: "File n."
+          n_dossier: "File n."
           requester: "Requester"
           status: "Status"
           updated: "Updated"
           actions: "Actions"
           accessibility_question: "What do you think about the accessibility of this service?"
         dossier_action:
-          edit_file: "Edit the file"
-          start_other_file: "Start an other file"
-          delete_file: "Delete the file"
+          edit_dossier: "Edit the file"
+          start_other_dossier: "Start an other file"
+          delete_dossier: "Delete the file"
           edit_draft: "Edit the draft"
           actions: "Actions"
       sessions:
@@ -202,11 +202,11 @@ en:
         gender_options:
           "Mme": "Female"
           "M.": "Male"
-    user:
-      siret: 'SIRET number'
-      password: 'password'
+      user:
+        siret: 'SIRET number'
+        password: 'password'
       instructeur:
-      password: 'password'
+        password: 'password'
     errors:
       messages:
         not_a_phone: 'Invalid phone number'
@@ -321,8 +321,8 @@ en:
       no_access: "You do not have access to this file"
       no_longer_editable: "Your file can no longer be edited"
       undergoingreview: "Your file is undergoing review. It is no longer possible to delete your file. To cancel the undergoingreview contact the adminitration via the mailbox."
-      file_deleted: "Your file has been successfully deleted"
-      archived_file: "Your file will be archived for an additional month"
+      deleted_dossier: "Your file has been successfully deleted"
+      archived_dossier: "Your file will be archived for an additional month"
       draft_saved: "Your draft has been saved."
       no_establishment: "There is no establishment tied to this file"
       identity_saved: "Identity data is registred"

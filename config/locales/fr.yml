@@ -38,9 +38,9 @@ fr:
     commencer:
       show:
         start_procedure: Commencer la démarche
-        existing_files: Vous avez déjà des dossiers pour cette démarche
-        show_files: Voir mes dossiers en cours
-        start_new_file: Commencer un nouveau dossier
+        existing_dossiers: Vous avez déjà des dossiers pour cette démarche
+        show_dossiers: Voir mes dossiers en cours
+        start_new_dossier: Commencer un nouveau dossier
     invites:
       dropdown:
         invite_to_edit: Inviter une personne à modifier ce dossier
@@ -55,8 +55,8 @@ fr:
         invite_to_participate: "Personnes invitées à participer à ce dossier"
         withdraw_permission: "Révoquer l’autorisation"
         want_to_withdraw_permission: "Souhaitez-vous supprimer l’autorisation ?"
-        edit_file: "Ces personnes peuvent modifier ce dossier."
-        submit_file_yourself: "Une fois le dossier complet, vous devez le déposer vous-même."
+        edit_dossier: "Ces personnes peuvent modifier ce dossier."
+        submit_dossier_yourself: "Une fois le dossier complet, vous devez le déposer vous-même."
     layouts:
       commencer:
         no_procedure:
@@ -73,7 +73,7 @@ fr:
       dossiers:
         edit:
           autosave: Votre dossier est enregistré automatiquement après chaque modification. Vous pouvez à tout moment fermer la fenêtre et reprendre plus tard là où vous en étiez.
-          submit_file: Déposer le dossier
+          submit_dossier: Déposer le dossier
           save_changes: Enregistrer les modifications du dossier
         messages:
           message_issuer:
@@ -85,7 +85,7 @@ fr:
           form:
             send_message: "Envoyer le message"
             attachment_size: "(taille max : 20 Mo)"
-            attach_file: "Joindre un document"
+            attach_dossier: "Joindre un document"
             write_message_placeholder: "Écrivez votre message ici"
             write_message_to_administration_placeholder: "Écrivez votre message à l’administration ici"
         demande:
@@ -104,30 +104,30 @@ fr:
           continue: Continuer
         merci:
           thanks: Merci !
-          file_send_line1: Votre dossier sur la démarche
-          file_send_line2: a bien été envoyé.
-          file_acces_line1: Vous avez désormais accès à votre
-          file_acces_line2: dossier en ligne.
-          file_edit_line1: Vous pouvez
-          file_edit_line2: le modifier
-          file_edit_line3: et
-          file_edit_line4: échanger avec un instructeur.
-          acces_file: Accéder à votre dossier
-          submit_file: Déposer un autre dossier
+          dossier_send_l1: Votre dossier sur la démarche
+          dossier_send_l2: a bien été envoyé.
+          dossier_acces_l1: Vous avez désormais accès à votre
+          dossier_acces_l2: dossier en ligne.
+          dossier_edit_l1: Vous pouvez
+          dossier_edit_l2: le modifier
+          dossier_edit_l3: et
+          dossier_edit_l4: échanger avec un instructeur.
+          acces_dossier: Accéder à votre dossier
+          submit_dossier: Déposer un autre dossier
         show:
           header:
-            edit_my_file: Modifier mon dossier
+            edit_dossier: Modifier mon dossier
             summary: "Résumé"
             request: "Demande"
             mailbox: "Messagerie"
-            file_number: "Dossier nº %{dossier_id}"
+            dossier_number: "Dossier nº %{dossier_id}"
             submit_date: "- Déposé le %{date_du_dossier}"
             print: "imprimer"
-            print_all_file: "Tout le dossier"
+            print_dossier: "Tout le dossier"
           status_overview:
             status_draft: brouillon
             status_in_progress: en construction
-            file_in_progress: Votre dossier est en construction. Cela signifie que
+            dossier_in_progress: Votre dossier est en construction. Cela signifie que
             still_editable: vous pouvez encore le modifier
             no_longer_editable: Vous ne pourrez plus modifier votre dossier lorsque l’administration le passera « en instruction ».
             status_review: en instruction
@@ -141,21 +141,21 @@ fr:
         messagerie:
           mailbox: "La messagerie vous permet de contacter l’instructeur en charge de votre dossier."
         demande:
-          edit_file: "Modifier le dossier"
+          edit_dossier: "Modifier le dossier"
         index:
-          files: "Dossiers"
+          dossiers: "Dossiers"
         dossiers_list:
           procedure: "Démarche"
-          n_file: "Nº dossier"
+          n_dossier: "Nº dossier"
           requester: "Demandeur"
           status: "Statut"
           updated: "Mis à jour"
           actions: "Actions"
           accessibility_question: "Que pensez-vous de la facilité d’utilisation de ce service ?"
         dossier_action:
-          edit_file: "Modifier le dossier"
-          start_other_file: "Commencer un autre dossier"
-          delete_file: "Supprimer le dossier"
+          edit_dossier: "Modifier le dossier"
+          start_other_dossier: "Commencer un autre dossier"
+          delete_dossier: "Supprimer le dossier"
           edit_draft: "Modifier le brouillon"
           actions: "Actions"
       sessions:
@@ -322,8 +322,8 @@ fr:
       no_access: "Vous n'avez pas accès à ce dossier"
       no_longer_editable: "Votre dossier ne peut plus être modifié"
       undergoingreview: "L’instruction de votre dossier a commencé, il n’est plus possible de supprimer votre dossier. Si vous souhaitez annuler l’instruction contactez votre administration par la messagerie de votre dossier."
-      file_deleted: "Votre dossier a bien été supprimé."
-      archived_file: "Votre dossier sera conservé un mois supplémentaire"
+      deleted_dossier: "Votre dossier a bien été supprimé."
+      archived_dossier: "Votre dossier sera conservé un mois supplémentaire"
       draft_saved: "Votre brouillon a bien été sauvegardé."
       no_establishment: "Aucun établissement n’est associé à ce dossier"
       identity_saved: "Identité enregistrée"

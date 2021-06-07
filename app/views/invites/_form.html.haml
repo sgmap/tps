@@ -6,9 +6,9 @@
         %li
           = invite.email
           %small= link_to(t('views.invites.form.withdraw_permission'), invite_path(invite), data: { confirm: t('views.invites.form.want_to_withdraw_permission') }, method: :delete, remote: true)
-    %p= t('views.invites.form.edit_file')
+    %p= t('views.invites.form.edit_dossier')
     - if dossier.brouillon?
-      %p= t('views.invites.form.submit_file_yourself')
+      %p= t('views.invites.form.submit_dossier_yourself')
 
   - else
     %p= t('views.invites.form.invite_to_edit_line1')
