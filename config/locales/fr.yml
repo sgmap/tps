@@ -120,22 +120,18 @@ fr:
             summary: "Résumé"
             request: "Demande"
             mailbox: "Messagerie"
-            dossier_number: "Dossier nº %{dossier_id}"
+            dossier_number: "Dossier nº %{dossier_id}"
             submit_date: "- Déposé le %{date_du_dossier}"
             print: "imprimer"
             print_dossier: "Tout le dossier"
           status_overview:
             status_draft: brouillon
             status_in_progress: en construction
-            dossier_in_progress: Votre dossier est en construction. Cela signifie que
-            still_editable: vous pouvez encore le modifier
-            no_longer_editable: Vous ne pourrez plus modifier votre dossier lorsque l’administration le passera « en instruction ».
+            en_construction_html: "Votre dossier est en construction. Cela signifie que <strong>vous pouvez encore le modifier</strong>. Vous ne pourrez plus modifier votre dossier lorsque l’administration le passera « en instruction »."
             status_review: en instruction
             admin_review: Votre dossier est en cours d’instruction par l’administration. Vous ne pouvez plus le modifier.
             status_completed: terminé
-            you_have_question: Vous avez une question ?
-            use_mailbox: Utilisez la messagerie pour
-            contact_admin: contacter l’administration directement
+            use_mailbox_for_questions_html: "<strong>Vous avez une question ?</strong> Utilisez la messagerie pour <a href=\"%{mailbox_url}\">contacter l’administration directement</a>."
           latest_message:
             latest_message: "Dernier message"
         messagerie:

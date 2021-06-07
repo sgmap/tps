@@ -21,30 +21,22 @@
     - elsif dossier.en_construction?
       .en-construction
         %p
-          = t('views.users.dossiers.show.status_overview.dossier_in_progress')
-          = succeed '.' do
-            %strong= t('views.users.dossiers.show.status_overview.still_editable')
-          = t('views.users.dossiers.show.status_overview.no_longer_editable')
+          t('views.users.dossiers.show.status_overview.en_construction_html')
 
         = render partial: 'users/dossiers/show/estimated_delay', locals: { procedure: dossier.procedure }
 
         %p
-          %strong= t('views.users.dossiers.show.status_overview.you_have_question')
-          = t('views.users.dossiers.show.status_overview.use_mailbox')
-          = succeed '.' do
-            = link_to t('views.users.dossiers.show.status_overview.contact_admin'), messagerie_dossier_url(dossier)
+          t('views.users.dossiers.show.status_overview.use_mailbox_for_questions_html', mailbox_url: messagerie_dossier_url(dossier))
 
     - elsif dossier.en_instruction?
       .en-instruction
-        %p t('views.users.dossiers.show.status_overview.admin_review')
+        %p
+          t('views.users.dossiers.show.status_overview.admin_review')
 
         = render partial: 'users/dossiers/show/estimated_delay', locals: { procedure: dossier.procedure }
 
         %p
-          %strong= t('views.users.dossiers.show.status_overview.you_have_question')
-          = t('views.users.dossiers.show.status_overview.use_mailbox')
-          = succeed '.' do
-            = link_to t('views.users.dossiers.show.status_overview.contact_admin'), messagerie_dossier_url(dossier)
+          t('views.users.dossiers.show.status_overview.use_mailbox_for_questions_html', mailbox_url: messagerie_dossier_url(dossier))
 
     - elsif dossier.accepte?
       .accepte

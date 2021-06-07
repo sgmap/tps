@@ -130,22 +130,18 @@ en:
             summary: "Summary"
             request: "Request"
             mailbox: "Mailbox"
-            dossier_number: "File n. %{dossier_id}"
+            dossier_number: "File n. %{dossier_id}"
             submit_date: "- Submit on %{date_du_dossier}"
             print: "print"
             print_dossier: "All the file"
           status_overview:
             status_draft: draft
             status_in_progress: in progress
-            dossier_in_progress: Your file is in progress. It means that
-            still_editable: you can still edit it
-            no_longer_editable: You will no longer be able to edit the file when the administration will switch it to "review".
+            en_construction_html: Your file is in progress. It means that <strong>you can still edit it</strong>. You will no longer be able to edit the file when the administration will switch it to "review".
             status_review: undergoing review
             admin_review: The administration is reviewing your file. You are no longer able to edit it.
             status_completed: completed
-            you_have_question: You have a question?
-            use_mailbox: Use the mailbox to
-            contact_admin: contact the administration directly
+            use_mailbox_for_questions_html: "<strong>You have a question?</strong> Use the mailbox to <a href=\"%{mailbox_url}\">contact the administration directly</a>."
           latest_message:
             latest_message: "Latest message"
         messagerie:
