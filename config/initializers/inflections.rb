@@ -27,6 +27,8 @@ end
 ActiveSupport::Inflector.inflections(:fr) do |inflect|
   inflect.clear
 
+  inflect.acronym 'FC'
+
   inflect.plural(/$/, 's')
   inflect.singular(/s$/, '')
 
