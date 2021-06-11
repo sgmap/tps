@@ -85,5 +85,11 @@ module TPS
     }
 
     config.skylight.probes += [:graphql]
+
+    # Custom Configuration
+    # @see https://guides.rubyonrails.org/configuring.html#custom-configuration
+    config.x.france_connect.enabled = ENV.fetch("FRANCE_CONNECT_ENABLED", "enabled") == "enabled"
+    config.x.france_connect.particulier = config_for(:france_connect)
+    config.x.fcp = config.x.france_connect.particulier
   end
 end
