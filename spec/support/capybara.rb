@@ -2,6 +2,9 @@ require 'capybara/rspec'
 require 'capybara-screenshot/rspec'
 require 'capybara/email/rspec'
 require 'selenium/webdriver'
+require 'capybara/mechanize'
+
+Capybara::Mechanize.local_hosts = ["test.host", "www.example.com"]
 
 Capybara.javascript_driver = :headless_chrome
 Capybara.ignore_hidden_elements = false

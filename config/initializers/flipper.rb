@@ -29,6 +29,7 @@ features = [
   :administrateur_web_hook,
   :dossier_pdf_vide,
   :expert_not_allowed_to_invite,
+  :france_connect,
   :hide_instructeur_email,
   :instructeur_bypass_email_login_token,
   :make_experts_notifiable,
