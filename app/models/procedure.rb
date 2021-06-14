@@ -18,6 +18,8 @@
 #  duree_conservation_dossiers_dans_ds       :integer
 #  duree_conservation_dossiers_hors_ds       :integer
 #  durees_conservation_required              :boolean          default(TRUE)
+#  encrypted_api_particulier_token           :string
+#  encrypted_fc_particulier_secret           :string
 #  euro_flag                                 :boolean          default(FALSE)
 #  experts_require_administrateur_invitation :boolean          default(FALSE)
 #  for_individual                            :boolean          default(FALSE)
@@ -40,6 +42,7 @@
 #  updated_at                                :datetime         not null
 #  canonical_procedure_id                    :bigint
 #  draft_revision_id                         :bigint
+#  encrypted_fc_particulier_id               :string
 #  parent_procedure_id                       :bigint
 #  published_revision_id                     :bigint
 #  service_id                                :bigint
@@ -47,6 +50,7 @@
 
 class Procedure < ApplicationRecord
   include ProcedureStatsConcern
+  include EncryptableConcern
 
   include Discard::Model
   self.discard_column = :hidden_at
@@ -54,6 +58,9 @@ class Procedure < ApplicationRecord
 
   MAX_DUREE_CONSERVATION = 36
   MAX_DUREE_CONSERVATION_EXPORT = 3.hours
+
+  attr_encrypted :fc_particulier_id
+  attr_encrypted :fc_particulier_secret
 
   has_many :revisions, -> { order(:id) }, class_name: 'ProcedureRevision', inverse_of: :procedure
   belongs_to :draft_revision, class_name: 'ProcedureRevision', optional: false
@@ -234,6 +241,8 @@ class Procedure < ApplicationRecord
     if: -> { new_record? || created_at > Date.new(2020, 11, 13) }
 
   validates :api_entreprise_token, jwt_token: true, allow_blank: true
+  validates :fc_particulier_id, format: { with: /\A[[:alnum:]]{64}\z/, message: "n'est pas un identifiant valide" }, allow_blank: true
+  validates :fc_particulier_secret, format: { with: /\A[[:alnum:]]{64}\z/, message: "n'est pas un secret valide" }, allow_blank: true
 
   before_save :update_juridique_required
   after_initialize :ensure_path_exists
@@ -415,6 +424,8 @@ class Procedure < ApplicationRecord
     if is_different_admin
       procedure.administrateurs = [admin]
       procedure.api_entreprise_token = nil
+      procedure.encrypted_fc_particulier_id = nil
+      procedure.encrypted_fc_particulier_secret = nil
     else
       procedure.administrateurs = administrateurs
     end
@@ -700,6 +711,10 @@ class Procedure < ApplicationRecord
     else
       nil
     end
+  end
+
+  def fc_particulier_validated?
+    fc_particulier_id.present? && fc_particulier_secret.present?
   end
 
   private

@@ -1,107 +1,160 @@
 feature 'France Connect Particulier Connexion' do
-  let(:code) { 'plop' }
-  let(:given_name) { 'titi' }
-  let(:family_name) { 'toto' }
-  let(:birthdate) { '20150821' }
-  let(:gender) { 'M' }
-  let(:birthplace) { '1234' }
-  let(:email) { 'plop@plop.com' }
-  let(:france_connect_particulier_id) { 'blabla' }
-
-  let(:user_info) do
-    {
-      france_connect_particulier_id: france_connect_particulier_id,
-      given_name: given_name,
-      family_name: family_name,
-      birthdate: birthdate,
-      birthplace: birthplace,
-      gender: gender,
-      email_france_connect: email
-    }
+  before(:all) do
+    Flipper.enable("france_connect")
   end
 
-  context 'when user is on login page' do
+  after(:all) do
+    Flipper.disable("france_connect")
+  end
+
+  context 'when user comes from a procedure link and choose FranceConnect login' do
+    let(:procedure) { create(:procedure, :published, :for_individual, :with_service) }
+
     before do
-      visit new_user_session_path
+      Capybara.current_driver = :mechanize
+      allow(SecureRandom).to receive(:hex).with(16).and_return("00000000000000000000000000000000")
     end
 
-    scenario 'link to France Connect is present' do
+    scenario 'he is redirected to dossier page' do
+      visit commencer_path(path: procedure.path)
+
+      expect(page).to have_procedure_description(procedure)
       expect(page).to have_css('.france-connect-login-button')
-    end
 
-    context 'and click on france connect link' do
-      let(:code) { 'plop' }
+      VCR.use_cassette("france_connect/success/authorize") do
+        page.find('.france-connect-login-button').click
+      end
 
-      context 'when authentification is ok' do
-        before do
-          allow_any_instance_of(FranceConnectParticulierClient).to receive(:authorization_uri).and_return(france_connect_particulier_callback_path(code: code))
-          allow(FranceConnectService).to receive(:retrieve_user_informations_particulier).and_return(france_connect_information)
-        end
+      VCR.use_cassette("france_connect/success/call_provider") do
+        page.click_on("Démonstration - faible")
+      end
 
-        context 'when is the first connexion' do
-          let(:france_connect_information) do
-            build(:france_connect_information,
-                  france_connect_particulier_id: france_connect_particulier_id,
-                  given_name: given_name,
-                  family_name: family_name,
-                  birthdate: birthdate,
-                  birthplace: birthplace,
-                  gender: gender,
-                  email_france_connect: email)
-          end
+      VCR.use_cassette("france_connect/success/interaction") do
+        page.fill_in("Identifiant", with: "test")
+        page.fill_in("Mot de passe", with: "123")
+        page.select("eidas1", from: "acr")
+        page.click_on("Valider")
+      end
 
-          before do
-            page.find('.france-connect-login-button').click
-          end
-
-          scenario 'he is redirected to user dossiers page' do
-            expect(page).to have_content('Dossiers')
-          end
-        end
-
-        context 'when is not the first connexion' do
-          let!(:france_connect_information) do
-            create(:france_connect_information,
-                  :with_user,
-                  france_connect_particulier_id: france_connect_particulier_id,
-                  given_name: given_name,
-                  family_name: family_name,
-                  birthdate: birthdate,
-                  birthplace: birthplace,
-                  gender: gender,
-                  email_france_connect: email,
-                  created_at: Time.zone.parse('12/12/2012'),
-                  updated_at: Time.zone.parse('12/12/2012'))
-          end
-
-          before do
-            page.find('.france-connect-login-button').click
-          end
-
-          scenario 'he is redirected to user dossiers page' do
-            expect(page).to have_content('Dossiers')
-          end
-
-          scenario 'the updated_at date is well updated' do
-            expect(france_connect_information.reload.updated_at).not_to eq(france_connect_information.created_at)
+      VCR.use_cassette("france_connect/success/userinfo") do
+        VCR.use_cassette("france_connect/success/token") do
+          VCR.use_cassette("france_connect/success/confirm_redirect_client", erb: true) do
+            page.click_on("Continuer")
           end
         end
       end
 
-      context 'when authentification is not ok' do
-        before do
-          allow_any_instance_of(FranceConnectParticulierClient).to receive(:authorization_uri).and_return(france_connect_particulier_callback_path(code: code))
-          allow(FranceConnectService).to receive(:retrieve_user_informations_particulier) { raise Rack::OAuth2::Client::Error.new(500, error: 'Unknown') }
+      expect(page).to have_procedure_description(procedure)
+      expect(page).to have_link("Commencer la démarche")
+    end
+  end
+
+  context 'when user is on login page and choose FranceConnect login' do
+    before do
+      Capybara.current_driver = :mechanize
+      allow(SecureRandom).to receive(:hex).with(16).and_return("00000000000000000000000000000000")
+    end
+
+    context 'when authentication is ok' do
+      context 'and it is the first connexion' do
+        scenario 'he is redirected to user dossiers page' do
+          visit new_user_session_path
+
+          expect(page).to have_css('.france-connect-login-button')
+
+          VCR.use_cassette("france_connect/success/authorize") do
+            page.find('.france-connect-login-button').click
+          end
+
+          VCR.use_cassette("france_connect/success/call_provider") do
+            page.click_on("Démonstration - faible")
+          end
+
+          VCR.use_cassette("france_connect/success/interaction") do
+            page.fill_in("Identifiant", with: "test")
+            page.fill_in("Mot de passe", with: "123")
+            page.select("eidas1", from: "acr")
+            page.click_on("Valider")
+          end
+
+          VCR.use_cassette("france_connect/success/userinfo") do
+            VCR.use_cassette("france_connect/success/token") do
+              VCR.use_cassette("france_connect/success/confirm_redirect_client", erb: true) do
+                page.click_on("Continuer")
+              end
+            end
+          end
+
+          expect(page).to have_content('Dossiers')
+        end
+      end
+
+      context 'and it is not the first connexion' do
+        let!(:fci) { create(:france_connect_information, :with_user) }
+
+        scenario 'he is redirected to user dossiers page' do
+          visit new_user_session_path
+
+          expect(page).to have_css('.france-connect-login-button')
+
+          VCR.use_cassette("france_connect/success/authorize") do
+            page.find('.france-connect-login-button').click
+          end
+
+          VCR.use_cassette("france_connect/success/call_provider") do
+            page.click_on("Démonstration - faible")
+          end
+
+          VCR.use_cassette("france_connect/success/interaction") do
+            page.fill_in("Identifiant", with: "test")
+            page.fill_in("Mot de passe", with: "123")
+            page.select("eidas1", from: "acr")
+            page.click_on("Valider")
+          end
+
+          VCR.use_cassette("france_connect/success/userinfo") do
+            VCR.use_cassette("france_connect/success/token") do
+              VCR.use_cassette("france_connect/success/confirm_redirect_client", erb: true) do
+                page.click_on("Continuer")
+              end
+            end
+          end
+
+          expect(page).to have_content('Dossiers')
+          expect(fci.reload.updated_at).not_to eq(fci.created_at)
+        end
+      end
+    end
+
+    context 'when authentication code is invalid' do
+      scenario 'is redirected to login page with error message' do
+        visit new_user_session_path
+
+        expect(page).to have_css('.france-connect-login-button')
+
+        VCR.use_cassette("france_connect/success/authorize") do
           page.find('.france-connect-login-button').click
         end
 
-        scenario 'he is redirected to login page' do
-          expect(page).to have_css('.france-connect-login-button')
+        VCR.use_cassette("france_connect/success/call_provider") do
+          page.click_on("Démonstration - faible")
         end
 
-        scenario 'error message is displayed' do
-          expect(page).to have_content(I18n.t('errors.messages.france_connect.connexion'))
+        VCR.use_cassette("france_connect/success/interaction") do
+          page.fill_in("Identifiant", with: "test")
+          page.fill_in("Mot de passe", with: "123")
+          page.select("eidas1", from: "acr")
+          page.click_on("Valider")
         end
+
+        VCR.use_cassette("france_connect/error/token") do
+          VCR.use_cassette("france_connect/success/confirm_redirect_client", erb: true) do
+            page.click_on("Continuer")
+          end
+        end
+
+        expect(page).to have_css('.france-connect-login-button')
+        expect(page).to have_content(I18n.t('errors.messages.france_connect.connexion'))
       end
     end
   end

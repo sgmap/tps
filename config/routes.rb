@@ -126,9 +126,17 @@ Rails.application.routes.draw do
   get '/stats' => 'stats#index'
   get '/stats/download' => 'stats#download'
 
-  namespace :france_connect do
-    get 'particulier' => 'particulier#login'
-    get 'particulier/callback' => 'particulier#callback'
+  if Rails.configuration.x.france_connect.enabled
+    namespace :france_connect do
+      get 'particulier' => 'particulier#login'
+      get 'particulier/callback' => 'particulier#callback'
+    end
+
+    constraints(-> { /^#{Rails.configuration.x.fcp.integration_base_url}/.match?(Rails.configuration.x.fcp.token_endpoint) }) do
+      get '/callback', to: 'france_connect/particulier#callback'
+      get '/login-callback', to: 'france_connect/particulier#callback'
+      get '/data-callback', to: 'france_connect/particulier#callback'
+    end
   end
 
   namespace :champs do
@@ -259,7 +267,10 @@ Rails.application.routes.draw do
       get '/:path/dossier_vide', action: 'dossier_vide_pdf', as: :dossier_vide
       get '/:path/sign_in', action: 'sign_in', as: :sign_in
       get '/:path/sign_up', action: 'sign_up', as: :sign_up
-      get '/:path/france_connect', action: 'france_connect', as: :france_connect
+
+      if Rails.configuration.x.france_connect.enabled
+        get '/:path/france_connect', action: 'france_connect', as: :france_connect
+      end
     end
 
     resources :dossiers, only: [:index, :show, :new] do
@@ -408,6 +419,8 @@ Rails.application.routes.draw do
         patch 'update_monavis'
         get 'jeton'
         patch 'update_jeton'
+        get 'fc_particulier'
+        patch 'update_fc_particulier'
         put :allow_expert_review
         put :experts_require_administrateur_invitation
       end

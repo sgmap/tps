@@ -1,19 +1,4 @@
 describe FranceConnect::ParticulierController, type: :controller do
-  let(:birthdate) { '20150821' }
-  let(:email) { 'test@test.com' }
-
-  let(:user_info) do
-    {
-      france_connect_particulier_id: 'blablabla',
-      given_name: 'titi',
-      family_name: 'toto',
-      birthdate: birthdate,
-      birthplace: '1234',
-      gender: 'M',
-      email_france_connect: email
-    }
-  end
-
   describe '#auth' do
     subject { get :login }
 
@@ -21,9 +6,7 @@ describe FranceConnect::ParticulierController, type: :controller do
   end
 
   describe '#callback' do
-    let(:code) { 'plop' }
-
-    subject { get :callback, params: { code: code } }
+    let(:france_connect_service) { instance_double("FranceConnectService") }
 
     context 'when params are missing' do
       subject { get :callback }
@@ -32,75 +15,99 @@ describe FranceConnect::ParticulierController, type: :controller do
     end
 
     context 'when param code is missing' do
-      let(:code) { nil }
+      subject { get :callback, params: { code: nil } }
 
       it { is_expected.to redirect_to(new_user_session_path) }
     end
 
     context 'when param code is empty' do
-      let(:code) { '' }
+      subject { get :callback, params: { code: "" } }
 
       it { is_expected.to redirect_to(new_user_session_path) }
     end
 
     context 'when code is correct' do
+      let(:code) { "2401d211-67df-43a0-9d9d-4ec0e01be3f2" }
+
+      subject { get :callback, params: { code: code } }
+
       before do
-        allow(FranceConnectService).to receive(:retrieve_user_informations_particulier)
-          .and_return(FranceConnectInformation.new(user_info))
+        expect(FranceConnectService).to receive(:new).with(code: code).and_return france_connect_service
+        expect(france_connect_service).to receive(:find_or_retrieve_france_connect_information).and_return fci
       end
 
       context 'when france_connect_particulier_id exist in database' do
-        let!(:france_connect_information) { create(:france_connect_information, :with_user, user_info) }
-        let(:user) { france_connect_information.user }
+        let!(:fci) { create(:france_connect_information, :with_user) }
+        let(:user) { fci.user }
 
-        it { expect { subject }.not_to change { FranceConnectInformation.count } }
+        context do
+          before do
+            subject
+          end
 
-        it do
-          subject
-          expect(user.reload.loged_in_with_france_connect).to eq(User.loged_in_with_france_connects.fetch(:particulier))
+          it { expect { response }.not_to change { FranceConnectInformation.count } }
+          it { expect(user.reload).to be_france_connect_particulier }
+          it { expect(user.reload.can_france_connect?).to be true }
         end
 
         context 'and the user has a stored location' do
           let(:stored_location) { '/plip/plop' }
-          before { controller.store_location_for(:user, stored_location) }
+
+          before do
+            controller.store_location_for(:user, stored_location)
+            subject
+          end
 
           it { is_expected.to redirect_to(stored_location) }
         end
 
         context 'and the user is also instructeur' do
-          let!(:instructeur) { create(:instructeur, email: email) }
-          before { subject }
+          before do
+            create(:instructeur, email: user.email)
+            user.reload
+            subject
+          end
 
-          it { expect(response).to redirect_to(new_user_session_path) }
-
+          it { expect(user).to be_instructeur }
+          it { is_expected.to redirect_to(new_user_session_path) }
           it { expect(flash[:alert]).to be_present }
         end
       end
 
       context 'when france_connect_particulier_id does not exist in database' do
-        it { expect { subject }.to change { FranceConnectInformation.count }.by(1) }
-        it { expect { subject }.to change { FranceConnectInformation.count }.by(1) }
+        let(:fci) { build(:france_connect_information, :with_user) }
 
-        describe 'FranceConnectInformation attributs' do
+        context do
           let(:stored_fci) { FranceConnectInformation.last }
 
-          before { subject }
+          before do
+            subject
+          end
 
-          it { expect(stored_fci).to have_attributes(user_info.merge(birthdate: Time.zone.parse(birthdate).to_datetime)) }
+          it { expect(stored_fci).to have_attributes(fci.attributes.except("created_at", "updated_at")) }
+          it { is_expected.to redirect_to(root_path) }
         end
 
-        it { is_expected.to redirect_to(root_path) }
+        it { expect { subject }.to change { FranceConnectInformation.count }.by(1) }
       end
     end
 
     context 'when code is not correct' do
+      let(:code) { "invalid" }
+
+      subject { get :callback, params: { code: code } }
+
       before do
-        allow(FranceConnectService).to receive(:retrieve_user_informations_particulier) { raise Rack::OAuth2::Client::Error.new(500, error: 'Unknown') }
+        expect(FranceConnectService).to receive(:new).with(code: code).and_return france_connect_service
+
+        expect(france_connect_service).to receive(:find_or_retrieve_france_connect_information) do
+          raise Rack::OAuth2::Client::Error.new(500, error: "Internal Error")
+        end
+
         subject
       end
 
-      it { expect(response).to redirect_to(new_user_session_path) }
-
+      it { is_expected.to redirect_to(new_user_session_path) }
       it { expect(flash[:alert]).to be_present }
     end
   end

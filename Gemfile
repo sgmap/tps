@@ -85,6 +85,7 @@ gem 'zxcvbn-ruby', require: 'zxcvbn'
 group :test do
   gem 'capybara' # Integration testing
   gem 'capybara-email' # Access emails during integration tests
+  gem 'capybara-mechanize', '~> 1.11' # RackTest driver for Capybara, but with remote request support
   gem 'capybara-screenshot' # Save a dump of the page when an integration test fails
   gem 'capybara-selenium'
   gem 'database_cleaner'
