@@ -274,6 +274,7 @@ ActiveRecord::Schema.define(version: 2021_06_04_095054) do
     t.datetime "last_avis_updated_at"
     t.datetime "last_commentaire_updated_at"
     t.string "api_entreprise_job_exceptions", array: true
+    t.string "api_particulier_job_exceptions", array: true
     t.interval "conservation_extension", default: "PT0S"
     t.string "deleted_user_email_never_send"
     t.index "to_tsvector('french'::regconfig, (search_terms || private_search_terms))", name: "index_dossiers_on_search_terms_private_search_terms", using: :gin
@@ -468,6 +469,14 @@ ActiveRecord::Schema.define(version: 2021_06_04_095054) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.date "birthdate"
+    t.string "api_particulier_dgfip_numero_fiscal"
+    t.string "api_particulier_dgfip_reference_de_l_avis"
+    t.string "api_particulier_caf_numero_d_allocataire"
+    t.string "api_particulier_caf_code_postal"
+    t.string "api_particulier_pole_emploi_identifiant"
+    t.string "api_particulier_mesri_ine"
+    t.jsonb "api_particulier_donnees", default: {}
+    t.index ["api_particulier_donnees"], name: "index_individuals_on_api_particulier_donnees", using: :gin
     t.index ["dossier_id"], name: "index_individuals_on_dossier_id", unique: true
   end
 
@@ -578,7 +587,11 @@ ActiveRecord::Schema.define(version: 2021_06_04_095054) do
     t.bigint "draft_revision_id"
     t.bigint "published_revision_id"
     t.boolean "allow_expert_review", default: true, null: false
+    t.string "encrypted_api_particulier_token"
+    t.jsonb "api_particulier_sources", default: {}
+    t.text "api_particulier_scopes", default: [], array: true
     t.boolean "experts_require_administrateur_invitation", default: false
+    t.index ["api_particulier_sources"], name: "index_procedures_on_api_particulier_sources", using: :gin
     t.index ["declarative_with_state"], name: "index_procedures_on_declarative_with_state"
     t.index ["draft_revision_id"], name: "index_procedures_on_draft_revision_id"
     t.index ["hidden_at"], name: "index_procedures_on_hidden_at"
