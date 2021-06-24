@@ -16,7 +16,7 @@
     - not_drafts = dossiers.merge(Dossier.state_not_brouillon)
 
     - if dossiers.count == 0
-      = link_to t('.start_procedure'), url_for_new_dossier(@revision), class: ['button large expand primary']
+      = link_to t('views.commencer.show.start_procedure'), url_for_new_dossier(@revision), class: ['button large expand primary']
 
     - elsif drafts.count == 1 && not_drafts.count == 0
       - dossier = drafts.first
