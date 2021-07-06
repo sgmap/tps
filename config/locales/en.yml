@@ -191,13 +191,6 @@ en:
         one: User
         other: Users
     attributes:
-      individual:
-        gender: Title
-        nom: Last Name
-        prenom: First Name
-        gender_options:
-          "Mme": "Female"
-          "M.": "Male"
       user:
         siret: 'SIRET number'
         password: 'password'

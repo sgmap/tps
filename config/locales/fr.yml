@@ -195,13 +195,6 @@ fr:
         one: Utilisateur
         other: Utilisateurs
     attributes:
-      individual:
-        gender: Civilité
-        nom: Nom
-        prenom: Prénom
-        gender_options:
-          "Mme": "Madame"
-          "M.": "Monsieur"
       default_attributes: &default_attributes
         password: 'Le mot de passe'
       user:
