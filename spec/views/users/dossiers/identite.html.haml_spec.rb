@@ -10,7 +10,6 @@ describe 'users/dossiers/identite.html.haml', type: :view do
   subject! { render }
 
   it 'has identity fields' do
-    puts rendered
     expect(rendered).to have_field('Prénom')
     expect(rendered).to have_field('Nom')
   end
