@@ -6,6 +6,20 @@ describe APIParticulier::API do
     Rails.application.secrets.api_entreprise[:token] = token
   end
 
+  describe "introspect" do
+    subject { api.introspect }
+
+    it "doit retourner une introspection valide" do
+      VCR.use_cassette("api_particulier/success/introspect") do
+        expect(subject.id).to be_nil
+        expect(subject.name).to eql("Application de sandbox")
+        expect(subject.email).to be_nil
+        expect(subject.scopes).to be_instance_of(Array)
+        expect(subject.scopes).to match_array(['dgfip_avis_imposition', 'dgfip_adresse', 'cnaf_allocataires', 'cnaf_enfants', 'cnaf_adresse', 'cnaf_quotient_familial', 'mesri_statut_etudiant'])
+      end
+    end
+  end
+
   describe "composition familiale" do
     subject { api.composition_familiale(numero_d_allocataire, code_postal) }
 

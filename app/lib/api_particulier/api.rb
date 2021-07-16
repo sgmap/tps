@@ -2,9 +2,15 @@ class APIParticulier::API
   include APIParticulier::Entities::Caf
   include APIParticulier::Error
 
+  INTROSPECT_RESOURCE_NAME = "introspect"
   COMPOSITION_FAMILIALE_RESOURCE_NAME = "v2/composition-familiale"
 
   TIMEOUT = 20
+
+  def self.introspect
+    response = get(INTROSPECT_RESOURCE_NAME)
+    APIParticulier::Entities::Introspection.new(response)
+  end
 
   def self.composition_familiale(numero_d_allocataire, code_postal)
     response = get(COMPOSITION_FAMILIALE_RESOURCE_NAME,
@@ -16,7 +22,7 @@ class APIParticulier::API
 
   private
 
-  def self.get(resource_name, params)
+  def self.get(resource_name, params = {})
     url = [API_PARTICULIER_URL, resource_name].join("/")
 
     response = Typhoeus.get(url,
